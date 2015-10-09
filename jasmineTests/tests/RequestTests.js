@@ -70,3 +70,19 @@ describe('The request class',function(){
 	});
 	
 });
+
+describe('The request failure function' , function(){
+	
+	it('Writes a helpful message to the page on request error' , function(){
+		
+		spyOn(document , 'write') ;
+		
+		Request.failed() ;
+		
+		expect(document.write).toHaveBeenCalledWith("Your browser has become seperated from the API, "
+												  + "or another error has occurred with the request, "
+												  + "please refresh the page to continue.") ;
+		
+	});
+	
+});

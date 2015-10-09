@@ -8,7 +8,7 @@
 
 "use strict" ;
 
-class Request {
+; class Request {
 	
 	constructor(AJAXObject , URI , callback){
 		
@@ -30,6 +30,12 @@ class Request {
 		
 	}
 	
-	static failed(){}
+	static failed(){
+		
+		document.write("Your browser has become seperated from the API, "
+				     + "or another error has occurred with the request, "
+				     + "please refresh the page to continue.") ;
+		
+	}
 
 }
