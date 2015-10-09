@@ -14,7 +14,7 @@ describe('The request class',function(){
 		'send' : function(){},
 		'onreadystatechange' : null,
 		'setRequestHeader' : function(){},
-		responseText : "{'x' : 'y'}" 
+		responseText : "{}" 
 	};
 	
 	it('Opens an AJAX request with the correct arguments',function(){
@@ -59,13 +59,13 @@ describe('The request class',function(){
 		
 		spyOn(window , 'callback') ;
 		
-		new Request(AJAXMock , '' , function(){});
+		new Request(AJAXMock , '' , window.callback);
 		
 		AJAXMock.readyState = 4 ;
 		AJAXMock.status = 200 ;
 		AJAXMock.onreadystatechange() ;
 
-		expect(callback).toHaveBeenCalledWith({'x' : 'y'}) ;	
+		expect(callback).toHaveBeenCalledWith({}) ;	
 		
 	});
 	
