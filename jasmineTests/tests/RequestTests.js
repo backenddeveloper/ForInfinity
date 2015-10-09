@@ -55,9 +55,9 @@ describe('The request class',function(){
 		
 		var AJAXMock = Object.create(AJAXMockTemplate) ;
 		
-		var callback = function(input){} ;
+		window.callback = function(input){} ;
 		
-		spyOn(callback) ;
+		spyOn(window , 'callback') ;
 		
 		new Request(AJAXMock , '' , function(){});
 		
