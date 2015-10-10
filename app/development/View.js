@@ -10,10 +10,53 @@
 
 ; var View = View || {} ; //The view namespace.
 
-View.displayAuthorities = function(authoritiesList){} ;
+View.displayAuthorities = function(authoritiesList){
+	
+	try {
+		var selectElement = document.getElementById('authorities_list') ;
+		
+		for(var authority in authoritiesList){
+			
+			var option = document.createElement('option') ;
+			option.value = authority ;
+			option.innerHTML = authoritiesList[authority] ;
+			selectElement.appendChild(option) ;
+			
+		}
+	} catch (err){
+		
+		document.write("The HTML has become corrupt, please check your build.");
+		
+	}
+	
+} ;
 
-View.authoritiesError = function(){} ;
+View.authoritiesError = function(){
+	
+	document.write("An error has occurred fetching the authorities list, please refresh the page to continue.");
+	
+} ;
 
-View.displayEstablishments = function(authoritiesList){} ;
+View.displayEstablishments = function(percentagesList){
+	
+	try{
+	
+		for(var key in percentagesList){
+			
+			document.getElementById("rating_value_" + key).innerHTML = percentagesList[key] + "%" ;
+			
+		}
+		
+	} catch (err){
 
-View.establishmentsError = function(){} ;
+		document.write("The HTML has become corrupt, please check your build.");
+		
+	}	
+	
+} ;
+
+View.establishmentsError = function(){
+	
+	document.write("An error has occurred fetching the establishment ratings, please refresh the page to continue.") ;
+	
+} ;

@@ -17,11 +17,9 @@ Utility.retrieveAuthorities = function(_request){
 };
 	
 Utility.processAuthorities = function(reply){
-	
+
 	try {
-		
-		reply = JSON.parse(reply) ;
-		
+
 		var authoritiesList = {} ;
 		
 		for(var index = 0 ;  index < reply.authorities.length ; index++){
@@ -53,9 +51,7 @@ Utility.processEstablishments = function(reply){
 	try {
 	
 		var calculator = new Calculator() ;
-		
-		reply = JSON.parse(reply) ;
-		
+
 		for(var index = 0 ;  index < reply.establishments.length ; index++){
 
 			

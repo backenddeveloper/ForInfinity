@@ -53,7 +53,7 @@ describe('The Utility namespace' , function(){
 			
 			spyOn(View , 'displayAuthorities');
 			
-			Utility.processAuthorities(JSON.stringify(mock)) ;
+			Utility.processAuthorities(mock) ;
 			
 			expect(View.displayAuthorities).toHaveBeenCalledWith(processedMock) ;
 		
@@ -65,7 +65,7 @@ describe('The Utility namespace' , function(){
 			
 			spyOn(View , 'authoritiesError');
 			
-			Utility.processAuthorities(JSON.stringify(mock)) ;
+			Utility.processAuthorities(mock) ;
 			
 			expect(View.authoritiesError).toHaveBeenCalled() ;
 			
@@ -124,7 +124,7 @@ describe('The Utility namespace' , function(){
 
 			spyOn(View , 'displayEstablishments') ;
 			
-			Utility.processEstablishments(JSON.stringify(mock)) ;
+			Utility.processEstablishments(mock) ;
 
 			expect(View.displayEstablishments).toHaveBeenCalledWith(ratings) ;
 			
@@ -136,7 +136,7 @@ describe('The Utility namespace' , function(){
 			
 			spyOn(View , 'establishmentsError');
 			
-			Utility.processEstablishments(JSON.stringify(mock)) ;
+			Utility.processEstablishments(mock) ;
 			
 			expect(View.establishmentsError).toHaveBeenCalled() ;
 			

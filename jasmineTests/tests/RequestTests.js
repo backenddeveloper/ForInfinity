@@ -25,7 +25,7 @@ describe('The request class',function(){
 		spyOn(AJAXMock,'send') ;
 		spyOn(AJAXMock,'setRequestHeader') ;
 		
-		new Request(AJAXMock , "A mock request string" , function(){});
+		new Request(AJAXMock , "/A mock request string" , function(){});
 		
 		expect(AJAXMock.open).toHaveBeenCalledWith('get','http://api.ratings.food.gov.uk/A mock request string',false) ;
 		expect(AJAXMock.setRequestHeader).toHaveBeenCalledWith('x-api-version',2) ;
