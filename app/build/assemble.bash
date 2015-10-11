@@ -21,7 +21,7 @@ cat > $FILE <<EOF
 EOF
 
 echo "        <script type='text/javascript'>" >> $FILE ;
-echo -e "\n        \"use strict\";" >> $FILE ;
+echo -e "\n            \"use strict\";" >> $FILE ;
 for file in ../development/*.js ;
 do 
 	echo "Processing $file file.." ; 

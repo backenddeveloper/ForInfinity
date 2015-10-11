@@ -23,10 +23,16 @@
 		};
 		
 		var URL= "http://api.ratings.food.gov.uk" + URI ;
-		AJAXObject.open('get', URL ,false) ;
-		AJAXObject.setRequestHeader('accept','application/json') ;
-		AJAXObject.setRequestHeader('x-api-version',2) ;
-		AJAXObject.send() ;
+		try {
+			AJAXObject.open('get', URL ,false) ;
+			AJAXObject.setRequestHeader('accept','application/json') ;
+			AJAXObject.setRequestHeader('x-api-version',2) ;
+			AJAXObject.send() ;
+		} catch (err){
+			
+			Request.failed();
+			
+		}
 		
 	}
 	

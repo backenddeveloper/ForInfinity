@@ -3,7 +3,7 @@
     <head>
         <script type='text/javascript'>
 
-        "use strict";
+            "use strict";
             
             ; class Calculator {
             	
@@ -68,10 +68,16 @@
             		};
             		
             		var URL= "http://api.ratings.food.gov.uk" + URI ;
-            		AJAXObject.open('get', URL ,false) ;
-            		AJAXObject.setRequestHeader('accept','application/json') ;
-            		AJAXObject.setRequestHeader('x-api-version',2) ;
-            		AJAXObject.send() ;
+            		try {
+            			AJAXObject.open('get', URL ,false) ;
+            			AJAXObject.setRequestHeader('accept','application/json') ;
+            			AJAXObject.setRequestHeader('x-api-version',2) ;
+            			AJAXObject.send() ;
+            		} catch (err){
+            			
+            			Request.failed();
+            			
+            		}
             		
             	}
             	
@@ -260,13 +266,6 @@
         			<th>Percentage</th>
         		</tr>
         		<tr>
-        			<td>Exempt</td>
-        			<td id="rating_value_Exempt">-</td>
-        		</tr>	
-        		<tr>
-        			<th colspan="2">England only</th>
-        		</tr>	
-        		<tr>
         			<td>1</td>
         			<td id="rating_value_1">-</td>
         		</tr>
@@ -287,8 +286,9 @@
         			<td id="rating_value_5">-</td>
         		</tr>
         		<tr>
-        			<th colspan="2">Scotland only</th>
-        		</tr>		
+        			<td>Exempt</td>
+        			<td id="rating_value_Exempt">-</td>
+        		</tr>
         		<tr>
         			<td>Pass</td>
         			<td id="rating_value_Pass">-</td>
