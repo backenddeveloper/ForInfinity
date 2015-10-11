@@ -1,3 +1,11 @@
+/*
+ * @Author: Graham Turner.
+ * @Application: A single page application to display food ratings by authority.
+ * @License: This and all related code is released for public use under the GNU/GPLv2
+ * This code is NOT suitable for production use. 
+ * 
+ */
+
 div {
 	position:absolute;
 }
@@ -7,29 +15,34 @@ table {
 }
 
 th {
-	text-align: left;
+	text-align: center;
 	border: 1px solid black ;
+	background: linear-gradient(#F8F8F8 , #F2F2F2);
 }
 
 td {
 	text-align: left;
 	border: 1px solid #999999 ;
+	background: linear-gradient(#cccccc , #e6e6e6);
 }
 
 select {
-	vertical-align: top; 
+    vertical-align: top;
+    border-radius: 1px;
+    border: 1px solid #cccccc;
+    background: linear-gradient(#F8F8F8 , #F2F2F2);
 }
 
 #authorities_nav {
 	left : 10% ;
-	top  : 20% ;
+	top  : 10% ;
 	width : 30% ;
-	height : 10% ;
+	height : 60% ;
 }
 
 #ratings_nav {
 	left : 60% ;
-	top  : 20% ;
+	top  : 10% ;
 	width : 30% ;
 	height : 60% ;
 }

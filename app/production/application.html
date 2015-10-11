@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <script type='text/javascript'>
+
+        "use strict";
+            
+            ; class Calculator {
+            	
+            	constructor(){
+            		
+            		this.ratings = {
+            			1 : 0,
+            			2 : 0,
+            			3 : 0,
+            			4 : 0,
+            			5 : 0,
+            			'Exempt' : 0,
+            			'Pass' : 0,
+            			'Pass and Eat Safe' : 0,
+            			'Improvement Required' : 0,
+            			'Awaiting Inspection' : 0
+            		};
+            		
+            		this.numberOfRatingsProcessed = 0 ;
+            	
+            	}
+            
+            	addRating(rating){
+            		
+            		if(rating in this.ratings){
+            			
+            			this.ratings[rating]++ ;
+            			this.numberOfRatingsProcessed++ ;
+            			
+            		}
+            		
+            	};
+            	
+            	getPercentages(){
+            		
+            		var percentagesObject = {} ;
+            		
+            		for(var ratingTotal in this.ratings){
+            			
+            			percentagesObject[ratingTotal] = Math.round(this.ratings[ratingTotal] * 100  / this.numberOfRatingsProcessed) ;
+            			
+            		}
+            	
+            		return percentagesObject ;
+            
+            	};
+            	
+            };
+            
+            ; class Request {
+            	
+            	constructor(AJAXObject , URI , callback){
+            		
+            		AJAXObject.onreadystatechange = function(){
+            			if(AJAXObject.readyState === 4){
+            				if(AJAXObject.status === 200){
+            					callback(JSON.parse(AJAXObject.responseText)) ;
+            				} else {
+            					Request.failed();
+            				}
+            			}
+            		};
+            		
+            		var URL= "http://api.ratings.food.gov.uk" + URI ;
+            		AJAXObject.open('get', URL ,false) ;
+            		AJAXObject.setRequestHeader('accept','application/json') ;
+            		AJAXObject.setRequestHeader('x-api-version',2) ;
+            		AJAXObject.send() ;
+            		
+            	}
+            	
+            	static failed(){
+            		
+            		document.write("Your browser has become seperated from the API, "
+                                 + "or another error has occurred with the request, "
+                                 + "please refresh the page to continue.") ;
+            		
+            	}
+            
+            }
+            
+            ; var Utility = Utility || {} ; //The utility namespace.
+            
+            Utility.retrieveAuthorities = function(_request){
+            	
+            	new _request(new XMLHttpRequest() , '/Authorities' , Utility.processAuthorities) ;
+            	
+            };
+            	
+            Utility.processAuthorities = function(reply){
+            
+            	try {
+            
+            		var authoritiesList = {} ;
+            		
+            		for(var index = 0 ;  index < reply.authorities.length ; index++){
+            			
+            			var authority = reply.authorities[index] ;
+            
+            			authoritiesList[authority.LocalAuthorityId] = authority.Name ;
+            			
+            		}
+            
+            		View.displayAuthorities(authoritiesList) ;
+            		
+            	} catch (err){
+            
+            		View.authoritiesError() ;
+            		
+            	}
+            	
+            };
+            
+            Utility.retrieveEstablishments = function(_request , id){
+            
+            	new _request(new XMLHttpRequest() , '/Establishments?localAuthorityId=' + id , Utility.processEstablishments) ;
+            
+            };
+            
+            Utility.processEstablishments = function(reply){
+            	
+            	try {
+            	
+            		var calculator = new Calculator() ;
+            
+            		for(var index = 0 ;  index < reply.establishments.length ; index++){
+            
+            			
+            			calculator.addRating(reply.establishments[index].RatingValue) ;
+            			
+            		}
+            		
+            		View.displayEstablishments(calculator.getPercentages()) ;
+            		
+            	} catch(err){
+            		
+            		View.establishmentsError() ;
+            		
+            	}
+            	
+            };
+            
+            ; var View = View || {} ; //The view namespace.
+            
+            View.displayAuthorities = function(authoritiesList){
+            	
+            	try {
+            		var selectElement = document.getElementById('authorities_list') ;
+            		
+            		for(var authority in authoritiesList){
+            			
+            			var option = document.createElement('option') ;
+            			option.value = authority ;
+            			option.innerHTML = authoritiesList[authority] ;
+            			selectElement.appendChild(option) ;
+            			
+            		}
+            	} catch (err){
+            		
+            		document.write("The HTML has become corrupt, please check your build.");
+            		
+            	}
+            	
+            } ;
+            
+            View.authoritiesError = function(){
+            	
+            	document.write("An error has occurred fetching the authorities list, please refresh the page to continue.");
+            	
+            } ;
+            
+            View.displayEstablishments = function(percentagesList){
+            	
+            	try{
+            	
+            		for(var key in percentagesList){
+            			
+            			document.getElementById("rating_value_" + key).innerHTML = percentagesList[key] + "%" ;
+            			
+            		}
+            		
+            	} catch (err){
+            
+            		document.write("The HTML has become corrupt, please check your build.");
+            		
+            	}	
+            	
+            } ;
+            
+            View.establishmentsError = function(){
+            	
+            	document.write("An error has occurred fetching the establishment ratings, please refresh the page to continue.") ;
+            	
+            } ;
+
+        </script>
+
+        <style type='text/css'>
+
+            div {
+            	position:absolute;
+            }
+            
+            table {
+            	border: 1px solid black ;
+            }
+            
+            th {
+            	text-align: center;
+            	border: 1px solid black ;
+            	background: linear-gradient(#F8F8F8 , #F2F2F2);
+            }
+            
+            td {
+            	text-align: left;
+            	border: 1px solid #999999 ;
+            	background: linear-gradient(#cccccc , #e6e6e6);
+            }
+            
+            select {
+                vertical-align: top;
+                border-radius: 1px;
+                border: 1px solid #cccccc;
+                background: linear-gradient(#F8F8F8 , #F2F2F2);
+            }
+            
+            #authorities_nav {
+            	left : 10% ;
+            	top  : 10% ;
+            	width : 30% ;
+            	height : 60% ;
+            }
+            
+            #ratings_nav {
+            	left : 60% ;
+            	top  : 10% ;
+            	width : 30% ;
+            	height : 60% ;
+            }
+
+         </style>
+
+    </head>
+
+    <body>
+
+        <div id="authorities_nav">
+        	<select id="authorities_list" onchange="Utility.retrieveEstablishments(Request , this.value);"></select>
+        </div>
+        <div id="ratings_nav">
+        	<table>
+        		<tr>
+        			<th>Rating</th>
+        			<th>Percentage</th>
+        		</tr>
+        		<tr>
+        			<td>Exempt</td>
+        			<td id="rating_value_Exempt">-</td>
+        		</tr>	
+        		<tr>
+        			<th colspan="2">England only</th>
+        		</tr>	
+        		<tr>
+        			<td>1</td>
+        			<td id="rating_value_1">-</td>
+        		</tr>
+        		<tr>
+        			<td>2</td>
+        			<td id="rating_value_2">-</td>
+        		</tr>
+        		<tr>
+        			<td>3</td>
+        			<td id="rating_value_3">-</td>
+        		</tr>
+        		<tr>
+        			<td>4</td>
+        			<td id="rating_value_4">-</td>
+        		</tr>
+        		<tr>
+        			<td>5</td>
+        			<td id="rating_value_5">-</td>
+        		</tr>
+        		<tr>
+        			<th colspan="2">Scotland only</th>
+        		</tr>		
+        		<tr>
+        			<td>Pass</td>
+        			<td id="rating_value_Pass">-</td>
+        		</tr>
+        		<tr>
+        			<td>Pass and Eat Safe</td>
+        			<td id="rating_value_Pass and Eat Safe">-</td>
+        		</tr>
+        		<tr>
+        			<td>Improvement Required</td>
+        			<td id="rating_value_Improvement Required">-</td>
+        		</tr>
+        		<tr>
+        			<td>Awaiting Inspection</td>
+        			<td id="rating_value_Awaiting Inspection">-</td>
+        		</tr>
+        	</table>
+        </div>
+        <script>Utility.retrieveAuthorities(Request) ;</script>
+
+    </body>
+</html>
